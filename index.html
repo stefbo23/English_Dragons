@@ -1,45 +1,167 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tiger Toms 3 — Kai & Ryu Wort-Abenteuer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/design-system.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tiger Toms 3 - English Quest</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
 <div id="app">
-  <div class="top-bar">
-    <div class="top-bar__title">🐉 <span>Tiger Toms 3</span></div>
-    <div class="badge" id="points-display">0 ⚡</div>
-  </div>
 
-  <main>
-    <section id="screen-home" class="screen"></section>
-    <section id="screen-comic" class="screen"></section>
-    <section id="screen-games" class="screen"></section>
-    <section id="screen-vocab" class="screen"></section>
-    <section id="screen-rewards" class="screen"></section>
-  </main>
+<header>
+
+<h1>🐯 Tiger Toms 3</h1>
+
+<div id="playerBar">
+
+<div>
+Level
+<span id="level">1</span>
 </div>
 
-<nav class="bottom-nav">
-  <button class="nav-btn" data-screen="home"><span class="nav-btn__icon">🏠</span>Start</button>
-  <button class="nav-btn" data-screen="comic"><span class="nav-btn__icon">📖</span>Comic</button>
-  <button class="nav-btn" data-screen="games"><span class="nav-btn__icon">🎮</span>Spiele</button>
-  <button class="nav-btn" data-screen="vocab"><span class="nav-btn__icon">📚</span>Vokabeln</button>
-  <button class="nav-btn" data-screen="rewards"><span class="nav-btn__icon">🏆</span>Belohnung</button>
-</nav>
+<div>
+XP
+<span id="xp">0</span>
+</div>
 
-<!-- Module: strikte Ladereihenfolge (Daten → Komponenten → Features → App) -->
-<script src="js/data/vocabulary.js"></script>
-<script src="js/components/components.js"></script>
-<script src="js/speech/speech.js"></script>
-<script src="js/rewards/rewards.js"></script>
-<script src="js/comics/comics.js"></script>
-<script src="js/games/games.js"></script>
-<script src="js/app.js"></script>
+<div>
+⭐
+<span id="stars">0</span>
+</div>
+
+</div>
+
+</header>
+
+<main id="screen">
+
+<section id="home">
+
+<h2>English Quest</h2>
+
+<p>
+
+Willkommen kleiner Held!
+
+Lerne Englisch
+
+besiege Monster
+
+und sammle Sterne.
+
+</p>
+
+<button id="btnStart">
+▶ Abenteuer starten
+</button>
+
+<button id="btnWords">
+📚 Wörter lernen
+</button>
+
+<button id="btnMemory">
+🎮 Memory
+</button>
+
+</section>
+
+<section id="world" class="hidden">
+
+<h2>Weltkarte</h2>
+
+<div class="worldMap">
+
+<div class="node active">
+
+🏠
+
+<p>Dorf</p>
+
+</div>
+
+<div class="road"></div>
+
+<div class="node">
+
+🌳
+
+<p>Wald</p>
+
+</div>
+
+<div class="road"></div>
+
+<div class="node">
+
+🏴‍☠️
+
+<p>Piraten</p>
+
+</div>
+
+<div class="road"></div>
+
+<div class="node">
+
+🏖️
+
+<p>Strand</p>
+
+</div>
+
+</div>
+
+<button id="btnBack">
+
+⬅ Zurück
+
+</button>
+
+</section>
+
+<section id="vocabulary" class="hidden">
+
+<h2>Vokabeln</h2>
+
+<div id="wordList"></div>
+
+<button id="btnBack2">
+
+⬅ Zurück
+
+</button>
+
+</section>
+
+<section id="memory" class="hidden">
+
+<h2>Memory</h2>
+
+<div id="memoryBoard"></div>
+
+<button id="btnBack3">
+
+⬅ Zurück
+
+</button>
+
+</section>
+
+</main>
+
+</div>
+
+<script src="vocabulary.js"></script>
+<script src="memory.js"></script>
+<script src="app.js"></script>
+
 </body>
+
 </html>
