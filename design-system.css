@@ -1,0 +1,227 @@
+/* ============================================================
+   TIGER TOMS 3 — DESIGN SYSTEM
+   Thema: "Drako & die Energie-Kugeln" — eigene Drachen-Abenteuerwelt
+   ============================================================ */
+
+:root {
+  /* --- Farbpalette --- */
+  --color-night: #171326;       /* Hintergrund, tiefe Nacht */
+  --color-night-soft: #241E3D;  /* Karten-Hintergrund */
+  --color-flame: #FF6B35;       /* Primäraktion, Energie */
+  --color-flame-dark: #E1481A;
+  --color-gold: #FFD23F;        /* Belohnungen, Sterne */
+  --color-teal: #14B8A6;        /* Erfolg, Fortschritt */
+  --color-sky: #7DD3FC;         /* Sekundärakzent, ruhig */
+  --color-ink: #F4F1EA;         /* Text hell auf dunkel */
+  --color-ink-dim: #B8B3C7;     /* gedämpfter Text */
+  --color-error: #F25C54;
+
+  /* --- Typografie --- */
+  --font-display: 'Fredoka', 'Baloo 2', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+
+  /* --- Radius / Spacing / Shadow --- */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --shadow-glow: 0 0 24px rgba(255, 107, 53, 0.35);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(ellipse at top, #241E3D 0%, var(--color-night) 65%);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--color-sky);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* --- Layout Grundgerüst --- */
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-3);
+  padding-bottom: 100px; /* Platz für Bottom-Nav */
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-1);
+}
+
+.top-bar__title {
+  font-size: 1.4rem;
+  color: var(--color-gold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(23, 19, 38, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-around;
+  padding: var(--space-2) 0 calc(var(--space-2) + env(safe-area-inset-bottom));
+  z-index: 50;
+}
+
+.nav-btn {
+  background: none;
+  color: var(--color-ink-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.7rem;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color 0.2s;
+}
+
+.nav-btn__icon { font-size: 1.4rem; }
+
+.nav-btn.active { color: var(--color-flame); }
+
+/* --- Karten / Panels --- */
+.card {
+  background: var(--color-night-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* --- Buttons --- */
+.btn {
+  border-radius: var(--radius-md);
+  padding: 14px 22px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn:active { transform: scale(0.96); }
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--color-flame), var(--color-flame-dark));
+  color: white;
+  box-shadow: var(--shadow-glow);
+}
+
+.btn--secondary {
+  background: var(--color-night-soft);
+  color: var(--color-ink);
+  border: 2px solid var(--color-teal);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-ink-dim);
+}
+
+.btn--block { width: 100%; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* --- Fortschritt & Badges --- */
+.progress-bar {
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-teal), var(--color-gold));
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 210, 63, 0.12);
+  color: var(--color-gold);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.star-pop {
+  animation: star-pop 0.5s ease;
+}
+@keyframes star-pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.screen { display: none; }
+.screen.active { display: block; animation: fade-in 0.25s ease; }
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+
+.toast {
+  position: fixed;
+  top: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-teal);
+  color: var(--color-night);
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(8px); }
