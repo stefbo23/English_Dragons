@@ -1,167 +1,234 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Pablo's Power Quest — Learn English. Become a Hero.</title>
+<meta name="description" content="Ein Englisch-Lernabenteuer für Kinder: Pablo's Power Quest.">
 
-<title>Tiger Toms 3 - English Quest</title>
+<!-- PWA / iOS meta -->
+<meta name="theme-color" content="#ff8c42">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pablo Quest">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.svg">
+<link rel="icon" href="assets/icons/icon-192.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="style.css">
-
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<div id="app">
+<!-- Skip link for keyboard users -->
+<a class="skip-link" href="#app-main">Zum Inhalt springen</a>
 
-<header>
+<div id="app-root">
 
-<h1>🐯 Tiger Toms 3</h1>
+  <!-- Top status bar: level, stars, orbs -->
+  <header id="status-bar" class="status-bar hidden" aria-label="Spielerstatus">
+    <button id="nav-back-btn" class="icon-btn" aria-label="Zurück" hidden>⬅️</button>
+    <div class="status-stat" aria-label="Level">
+      <span aria-hidden="true">🛡️</span>
+      <span id="status-level">1</span>
+    </div>
+    <div class="status-stat" aria-label="Sterne">
+      <span aria-hidden="true">⭐</span>
+      <span id="status-stars">0</span>
+    </div>
+    <div class="status-stat" aria-label="Power-Orbs">
+      <span aria-hidden="true">🔮</span>
+      <span id="status-orbs">0</span>
+    </div>
+    <div class="status-xp-bar" aria-label="Erfahrungspunkte Fortschritt">
+      <div id="status-xp-fill" class="status-xp-fill"></div>
+    </div>
+  </header>
 
-<div id="playerBar">
+  <main id="app-main" tabindex="-1">
+    <!-- Screens are rendered dynamically here by router.js -->
+    <div id="screen-container"></div>
+  </main>
 
-<div>
-Level
-<span id="level">1</span>
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  <div id="modal-root"></div>
 </div>
 
-<div>
-XP
-<span id="xp">0</span>
-</div>
+<!-- Templates for screens (cloned by router.js) -->
+<template id="tpl-start">
+  <section class="screen screen-start" aria-labelledby="start-title">
+    <div class="start-bg" aria-hidden="true">
+      <div class="star s1"></div><div class="star s2"></div><div class="star s3"></div>
+      <div class="star s4"></div><div class="star s5"></div>
+    </div>
+    <div class="start-content">
+      <h1 id="start-title" class="game-title">Pablo's Power Quest</h1>
+      <p class="game-subtitle">Learn English. Become a Hero.</p>
+      <svg class="pablo-hero" viewBox="0 0 120 140" width="120" height="140" role="img" aria-label="Pablo, der Held">
+        <circle cx="60" cy="40" r="26" fill="#ffd28a"/>
+        <circle cx="50" cy="36" r="4" fill="#2b2b2b"/>
+        <circle cx="70" cy="36" r="4" fill="#2b2b2b"/>
+        <path d="M48 50 Q60 60 72 50" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M34 22 Q60 0 86 22 Q74 14 60 14 Q46 14 34 22Z" fill="#ff8c42"/>
+        <rect x="34" y="66" width="52" height="46" rx="14" fill="#3a6df0"/>
+        <rect x="34" y="66" width="52" height="14" rx="7" fill="#ff8c42"/>
+        <circle cx="60" cy="112" r="10" fill="#ffe27a" stroke="#e2a400" stroke-width="2"/>
+      </svg>
+      <div class="start-stats" id="start-stats">
+        <span>Level <strong id="start-level">1</strong></span>
+        <span>⭐ <strong id="start-stars">0</strong></span>
+        <span>🔮 <strong id="start-orbs">0</strong></span>
+      </div>
+      <div class="start-buttons">
+        <button class="btn btn-primary btn-large" data-nav="worldmap">🗺️ Abenteuer starten</button>
+        <button class="btn btn-secondary" data-nav="minigames-hub">🎮 Minispiele</button>
+        <button class="btn btn-secondary" data-nav="progress">📊 Fortschritt</button>
+        <button class="btn btn-secondary" data-nav="parent-gate">👨‍👩‍👧 Elternbereich</button>
+        <button class="btn btn-secondary" data-nav="settings">⚙️ Einstellungen</button>
+      </div>
+    </div>
+  </section>
+</template>
 
-<div>
-⭐
-<span id="stars">0</span>
-</div>
+<template id="tpl-profile">
+  <section class="screen" aria-labelledby="profile-title">
+    <h1 id="profile-title">Spielerprofil</h1>
+    <div id="profile-body" class="card-list"></div>
+  </section>
+</template>
 
-</div>
+<template id="tpl-worldmap">
+  <section class="screen" aria-labelledby="worldmap-title">
+    <h1 id="worldmap-title">Weltkarte</h1>
+    <div id="worldmap-body" class="world-grid"></div>
+  </section>
+</template>
 
-</header>
+<template id="tpl-missions">
+  <section class="screen" aria-labelledby="missions-title">
+    <h1 id="missions-title">Missionen</h1>
+    <div id="missions-body" class="card-list"></div>
+  </section>
+</template>
 
-<main id="screen">
+<template id="tpl-comic">
+  <section class="screen screen-comic" aria-labelledby="comic-title">
+    <h1 id="comic-title" class="sr-only">Comic</h1>
+    <div id="comic-body"></div>
+  </section>
+</template>
 
-<section id="home">
+<template id="tpl-quiz">
+  <section class="screen" aria-labelledby="quiz-title">
+    <h1 id="quiz-title">Quiz</h1>
+    <div id="quiz-body"></div>
+  </section>
+</template>
 
-<h2>English Quest</h2>
+<template id="tpl-memory">
+  <section class="screen" aria-labelledby="memory-title">
+    <h1 id="memory-title">Memory</h1>
+    <div id="memory-body"></div>
+  </section>
+</template>
 
-<p>
+<template id="tpl-sentence">
+  <section class="screen" aria-labelledby="sentence-title">
+    <h1 id="sentence-title">Satzbau</h1>
+    <div id="sentence-body"></div>
+  </section>
+</template>
 
-Willkommen kleiner Held!
+<template id="tpl-dialogue">
+  <section class="screen" aria-labelledby="dialogue-title">
+    <h1 id="dialogue-title">Dialog</h1>
+    <div id="dialogue-body"></div>
+  </section>
+</template>
 
-Lerne Englisch
+<template id="tpl-listening">
+  <section class="screen" aria-labelledby="listening-title">
+    <h1 id="listening-title">Hörspiel</h1>
+    <div id="listening-body"></div>
+  </section>
+</template>
 
-besiege Monster
+<template id="tpl-speaking">
+  <section class="screen" aria-labelledby="speaking-title">
+    <h1 id="speaking-title">Sprechübung</h1>
+    <div id="speaking-body"></div>
+  </section>
+</template>
 
-und sammle Sterne.
+<template id="tpl-minigames-hub">
+  <section class="screen" aria-labelledby="minigames-title">
+    <h1 id="minigames-title">Minispiele</h1>
+    <div id="minigames-body" class="world-grid"></div>
+  </section>
+</template>
 
-</p>
+<template id="tpl-reward">
+  <section class="screen screen-reward" aria-labelledby="reward-title">
+    <h1 id="reward-title">Belohnung</h1>
+    <div id="reward-body"></div>
+  </section>
+</template>
 
-<button id="btnStart">
-▶ Abenteuer starten
-</button>
+<template id="tpl-progress">
+  <section class="screen" aria-labelledby="progress-title">
+    <h1 id="progress-title">Fortschrittsanzeige</h1>
+    <div id="progress-body" class="card-list"></div>
+  </section>
+</template>
 
-<button id="btnWords">
-📚 Wörter lernen
-</button>
+<template id="tpl-parent-gate">
+  <section class="screen" aria-labelledby="gate-title">
+    <h1 id="gate-title">Elternbereich</h1>
+    <div id="gate-body" class="card-list"></div>
+  </section>
+</template>
 
-<button id="btnMemory">
-🎮 Memory
-</button>
+<template id="tpl-parent-dashboard">
+  <section class="screen" aria-labelledby="dash-title">
+    <h1 id="dash-title">Elternbereich — Statistiken</h1>
+    <div id="dash-body" class="card-list"></div>
+  </section>
+</template>
 
-</section>
+<template id="tpl-settings">
+  <section class="screen" aria-labelledby="settings-title">
+    <h1 id="settings-title">Einstellungen</h1>
+    <div id="settings-body" class="card-list"></div>
+  </section>
+</template>
 
-<section id="world" class="hidden">
+<template id="tpl-help">
+  <section class="screen" aria-labelledby="help-title">
+    <h1 id="help-title">Hilfe</h1>
+    <div id="help-body" class="card-list"></div>
+  </section>
+</template>
 
-<h2>Weltkarte</h2>
-
-<div class="worldMap">
-
-<div class="node active">
-
-🏠
-
-<p>Dorf</p>
-
-</div>
-
-<div class="road"></div>
-
-<div class="node">
-
-🌳
-
-<p>Wald</p>
-
-</div>
-
-<div class="road"></div>
-
-<div class="node">
-
-🏴‍☠️
-
-<p>Piraten</p>
-
-</div>
-
-<div class="road"></div>
-
-<div class="node">
-
-🏖️
-
-<p>Strand</p>
-
-</div>
-
-</div>
-
-<button id="btnBack">
-
-⬅ Zurück
-
-</button>
-
-</section>
-
-<section id="vocabulary" class="hidden">
-
-<h2>Vokabeln</h2>
-
-<div id="wordList"></div>
-
-<button id="btnBack2">
-
-⬅ Zurück
-
-</button>
-
-</section>
-
-<section id="memory" class="hidden">
-
-<h2>Memory</h2>
-
-<div id="memoryBoard"></div>
-
-<button id="btnBack3">
-
-⬅ Zurück
-
-</button>
-
-</section>
-
-</main>
-
-</div>
-
-<script src="vocabulary.js"></script>
-<script src="memory.js"></script>
-<script src="app.js"></script>
-
+<script src="js/storage.js"></script>
+<script src="js/state.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/lessons.js"></script>
+<script src="js/comics.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/memory.js"></script>
+<script src="js/sentence-builder.js"></script>
+<script src="js/dialogue-game.js"></script>
+<script src="js/listening-game.js"></script>
+<script src="js/speaking-game.js"></script>
+<script src="js/parent-dashboard.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/router.js"></script>
+<script src="js/app.js"></script>
 </body>
-
 </html>
